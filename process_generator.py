@@ -36,7 +36,7 @@ for i in range(number_of_processes):
     process_list.append(process)
 
 # Open or Create File to Write Data
-with open('processes.csv', 'w', newline='') as csvfile:
+with open('data/processes_1.csv', 'w', newline='') as csvfile:
     # Initialize Writer Class
     writer = csv.writer(csvfile)
 
