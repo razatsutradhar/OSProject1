@@ -40,12 +40,9 @@ def CompletionTime(n, array):
         for k in range(0, 6):
             array[k][value], array[k][i] = array[k][i], array[k][value]
   
-  
-if __name__ == '__main__':
+def SJF(n): 
 
-    # n is number of processors (6)
-    n = 6
-
+# n is number of processors (6)
   
 #procress id: arr[0] in range (1,6)
 
