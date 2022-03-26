@@ -10,6 +10,5 @@ print(array_of_processes)
 
 print(RR(array_of_processes))
 
-#calculate average awaiting time and average turn around time using SJF
-print("\nCalculate awaiting time and average time using SJF")
-SJF(6)
+#Question 1 SJF
+(SJF(array_of_processes))
