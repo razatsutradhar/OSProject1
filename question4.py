@@ -1,4 +1,4 @@
-#from alogoritms.FIFO import FIFO
+from alogoritms.FIFO import FIFO
 from alogoritms.SJF import SJF_Q4
 from alogoritms.RR import RR
 from process import Process
