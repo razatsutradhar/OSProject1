@@ -12,7 +12,7 @@ def average(list):
     return sum(list) / len(list)
 
 # Parameter Declarations
-number_of_processes = 50
+number_of_processes = 250
 
 # CPU Cycle Distribution Parameters
 cpu_upper_bound = 11000

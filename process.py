@@ -33,10 +33,10 @@ class Process:
     # string representation of a Process object
     def __repr__(self):
         if self.done:
-            return "[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(
+            return "\n[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(
                 self.mem) + ", Time Done: " + str(self.time_completed) + "]"
         else:
-            return "[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(self.mem) + "]"
+            return "\n[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(self.mem) + "]"
 
 
 #function to return an array of processes based from a CSV file
