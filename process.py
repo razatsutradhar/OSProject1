@@ -10,6 +10,7 @@ class Process:
         self.cpu_cycles = cpu_cycle
         self.cycles_left = cpu_cycle
         self.mem = mem
+        self.enter_queue_time = 0
 
     # enter current time and number of cpu cycles you want to execute
     # will return howmany were acually executed
@@ -30,13 +31,17 @@ class Process:
         else:
             return 0
 
+    def calc_execution_time(self, c):
+
+        return min(c, self.cycles_left)
+
     # string representation of a Process object
     def __repr__(self):
         if self.done:
             return "\n[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(
-                self.mem) + ", Time Done: " + str(self.time_completed) + "]"
+                self.mem) + ", Entry Time: " + str(self.enter_queue_time) + ", Time Done: " + str(self.time_completed) + "]"
         else:
-            return "\n[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(self.mem) + "]"
+            return "\n[PID: " + str(self.pid) + ", Cycles: " + str(self.cpu_cycles) + ", Memory: " + str(self.mem) + ", Left: " + str(self.cycles_left) + "]"
 
 
 #function to return an array of processes based from a CSV file

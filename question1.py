@@ -11,5 +11,4 @@ print(array_of_processes)
 print(RR(array_of_processes))
 
 #Question 1 SJF
-print("SJF:")
 (SJF(array_of_processes))
