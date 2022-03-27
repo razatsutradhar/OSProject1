@@ -10,7 +10,7 @@ def RR(j):
     # jobs.sort(key=lambda x: x.cpu_cycles)
     t = 0
     numOfCPUs = 6
-    quantum = 500
+    quantum = pow(10,9)
     allDone = True
     slice = quantum
     processors = []
@@ -28,16 +28,15 @@ def RR(j):
 
     timeSlots = [quantum]*numOfCPUs
     while len(jobs) > 0 or not AllNone(processors):
+        print(str(((1-len(jobs)/250)*100))+ "%")
         times = []
         for i in range(0,numOfCPUs):
             if processors[i] != None:
                 # print(processors[i])
                 times.append(processors[i].calc_execution_time(timeSlots[i]))
         minTime = min(times)
-        # print("time: " +str(t) )
         t += minTime
-        # print(processors)
-        # print(times)
+
         for i in range(0,numOfCPUs):
             # print(processors[i])
             if processors[i] != None:
@@ -76,6 +75,6 @@ def RR(j):
     # print(cpuTotal)
     waitTime /= len(finishedList)
     turnTime /= len(finishedList)
-    return [waitTime, turnTime]
+    return [waitTime/(2*pow(10, 9)), turnTime/(2*pow(10, 9))]
 
 

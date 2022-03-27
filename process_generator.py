@@ -15,28 +15,25 @@ def average(list):
 number_of_processes = 250
 
 # CPU Cycle Distribution Parameters
-cpu_upper_bound = 11000
-cpu_lower_bound = 1000
-cpu_mean = 6000
-cpu_std_deviation = 2000
+cpu_upper_bound = pow(10,12)
+cpu_lower_bound = pow(10,6)
+
 
 # Memory Requirement Distribution Parameters
-memory_upper_bound = 100
+memory_upper_bound = 16000
 memory_lower_bound = 1
-memory_mean = 20
-memory_std_deviation = 15
 
 process_list = []
 
 for i in range(number_of_processes):
-    cpu_cycles = customNormalDistribution(cpu_upper_bound, cpu_lower_bound, cpu_mean, cpu_std_deviation)
-    memory = customNormalDistribution(memory_upper_bound, memory_lower_bound, memory_mean, memory_std_deviation)
+    cpu_cycles = random.randint(cpu_lower_bound, cpu_upper_bound)
+    memory = random.randint(memory_lower_bound, memory_upper_bound)
 
     process = [i + 1, cpu_cycles, memory]
     process_list.append(process)
 
 # Open or Create File to Write Data
-with open('data/processes_1.csv', 'w', newline='') as csvfile:
+with open('data/processes.csv', 'w', newline='') as csvfile:
     # Initialize Writer Class
     writer = csv.writer(csvfile)
 

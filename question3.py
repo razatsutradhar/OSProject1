@@ -1,71 +1,114 @@
-
-#with PA = PB = PC = 2 GHz, and PD = PE = PF = 4GHz
-#total cyccles we can use in the CPU at one is 3*2ghz + 3*4ghz = 18ghz
-#In general, turnaround time is minimized if most processes finish their next cpu burst within one time quantum.
-
-
-from alogoritms.FIFO import FIFO
-from alogoritms.SJF import SJF
 from alogoritms.RR import RR
-from process import Process
-from process import csv_to_processes
+from process import Process, csv_to_processes
+from alogoritms.RR import AllNone
 
-#returns an array of Process objects
+jobs = csv_to_processes('data/processes.csv')
+jobs.sort(key=lambda x: x.cpu_cycles)
 
-import math
+processors = []
+finishedList = []
 
-array_of_processes = csv_to_processes('data/processes_1.csv')
+totalCPU = 0
+for p in jobs:
+    totalCPU += p.cpu_cycles
 
-array_of_processes_memory = []
+threshhold = (totalCPU*2)/3
+short = []
+long = []
+shortFinished = []
+longFinished = []
+littleProcessors = []
+bigProcessors = []
+totalCPU = 0
+smallProcessorSpeed = 2*pow(10,9)
+bigProcessorSpeed = 4*pow(10,9)
+smallMemoryMax = 8000
 
-total_memory_process = 0;
-for i in range(0, 250):
-    array_of_processes_memory.append(array_of_processes[i].mem);
+temp = []
+for p in jobs:
+    if p.mem > smallMemoryMax:
+        short.append(p)
+        threshhold -= p.cpu_cycles
+    else:
+        temp.append(p)
+jobs = temp
 
-    #to minimize the turn around time of 250 process, we need to place each process appropriate in to each processor parralel.
-    #once it reach capacity of one processor memory it will stop process on that and continute on other one
+for p in jobs:
+    if totalCPU < threshhold:
+        short.append(p)
+        totalCPU += p.cpu_cycles
+    else:
+        long.append(p)
 
-cpu1_memory = 8*math.pow(10,9)
-cpu2_memory = 16*math.pow(10,9)
-processor_a = []
-total_memory_a = 0
-processor_b = []
-total_memory_b = 0
-processor_c = []
-total_memory_c = 0
-processor_d = []
-total_memory_d = 0
-processor_e = []
-total_memory_e = 0
-processor_f = []
-total_memory_f = 0
-total_turn_around_time = 0;
+print(len(short))
+print(len(long))
+# print(len([x for x in short if x.mem>smallMemoryMax]))
+# print(len([x for x in long if x.mem>smallMemoryMax]))
 
-for i in range(0, round(250/6)):
-    if(total_memory_a < cpu1_memory):
-        processor_a.append(array_of_processes_memory[i]);
-        total_memory_a += array_of_processes_memory[i];
-    if (total_memory_b < cpu1_memory):
-        processor_b.append(array_of_processes_memory[i+1]);
-        total_memory_b += array_of_processes_memory[i + 1];
-    if (total_memory_c < cpu1_memory):
-        processor_c.append(array_of_processes_memory[i + 2]);
-        total_memory_c += array_of_processes_memory[i + 2];
-    if (total_memory_d < cpu2_memory):
-        processor_d.append(array_of_processes_memory[i + 3]);
-        total_memory_d += array_of_processes_memory[i + 3];
-    if (total_memory_e < cpu2_memory):
-        processor_e.append(array_of_processes_memory[i + 4]);
-        total_memory_e += array_of_processes_memory[i + 4];
-    if (total_memory_f < cpu2_memory):
-        processor_f.append(array_of_processes_memory[i + 5]);
-        total_memory_f += array_of_processes_memory[i + 5];
+long.sort(key=lambda x: x.cpu_cycles)
+short.sort(key=lambda x: x.cpu_cycles)
+# print(len([x for x in short if x.mem>smallMemoryMax]))
+# print(len([x for x in long if x.mem>smallMemoryMax]))
+# print()
+for i in range(0,3):
+    littleProcessors.append(long.pop(0))
+    bigProcessors.append(short.pop(0))
 
-print("==========Question 3==========")
+t = 0
+while len(short)>0 and len(long)>0 and len(bigProcessors)>0 and len(littleProcessors)>0:
+    times = []
+    for p in littleProcessors:
+        if p is not None:
+            times.append(p.cycles_left/smallProcessorSpeed)
+    for p in bigProcessors:
+        if p is not None:
+            times.append(p.cycles_left/bigProcessorSpeed)
 
-print("process distributed in process a: ", processor_a)
-print("process distributed in process b: ",  processor_b)
-print("process distributed in process c: ", processor_c)
-print("process distributed in process d: ", processor_d)
-print("process distributed in process e: ", processor_e)
-print("process distributed in process f: ", processor_f)
+    # print(min(times))
+    minTime = min(times)
+    # print(littleProcessors)
+    # print(bigProcessors)
+    # print()
+    for p in littleProcessors:
+        if p is not None:
+            p.execute_for(minTime*smallProcessorSpeed, t*smallProcessorSpeed)
+            if p.done:
+                finishedList.append(p)
+                longFinished.append(p)
+                littleProcessors.remove(p)
+                if len(long) > 0:
+                    littleProcessors.append(long.pop(0))
+
+    for p in bigProcessors:
+        if p is not None:
+            p.execute_for(minTime*bigProcessorSpeed, t*bigProcessorSpeed)
+            if p.done:
+                finishedList.append(p)
+                shortFinished.append(p)
+                bigProcessors.remove(p)
+                if len(long) > 0:
+                    bigProcessors.append(short.pop(0))
+
+    t+= minTime
+
+waitTime = 0
+turnTime = 0
+cpuTotal = 0
+# print(short)
+# print(long)
+for p in shortFinished:
+    waitTime += (p.time_completed-p.cpu_cycles)/smallProcessorSpeed
+    turnTime += p.time_completed/smallProcessorSpeed
+    cpuTotal += p.cpu_cycles
+
+for p in longFinished:
+    waitTime += (p.time_completed-p.cpu_cycles)/bigProcessorSpeed
+    turnTime += p.time_completed/bigProcessorSpeed
+    cpuTotal += p.cpu_cycles
+# print(finishedList)
+# print(cpuTotal)
+waitTime /= len(finishedList)
+turnTime /= len(finishedList)
+# print(jobs)
+print("wait: " + str(waitTime))
+print("turn around: " + str(turnTime))
