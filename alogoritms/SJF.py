@@ -1,6 +1,6 @@
 
 #Linh
-#Question 1 SJF
+#Question 1 SQJ
 #Sort all processes base on burst time and print out FIFO
 
 import random
@@ -68,12 +68,9 @@ def SJF_Q4(n, array_of_processes):
 
     arrangeArrival(n, processes)
     CompletionTime(n, processes)
-    waitingtime = 0
-    turaroundtime = 0
+    waiting_time = 0
+    turnaround_time = 0
     for i in range(0, n):
-        waitingtime += processes[4][i]
-        turaroundtime += processes[5][i]
-    print("Average waiting time scheduling using SJF is ", (waitingtime / n))
-    print("Average Turnaround Time scheduling using SJF is  ", (turaroundtime / n))
-
-
+        waiting_time += processes[4][i]
+        turnaround_time += processes[5][i]
+    return {'waiting_time': waiting_time, 'turnaround_time': turnaround_time, 'turnaround_time_list': processes[5]};

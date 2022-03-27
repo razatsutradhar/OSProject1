@@ -8,4 +8,9 @@ from process import csv_to_processes
 array_of_processes = csv_to_processes('data/processes_1.csv')
 
 #Question 4 SJF
-(SJF_Q4(250,array_of_processes))
+
+result = (SJF_Q4(250,array_of_processes))
+print("==========Question 4==========")
+print("SJF: ")
+print("Average waiting time scheduling using SJF is ", (result['waiting_time'] / 250))
+print("Average Turnaround Time scheduling using SJF is ", (result['turnaround_time'] / 250))
