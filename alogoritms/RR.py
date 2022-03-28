@@ -28,7 +28,7 @@ def RR(j):
 
     timeSlots = [quantum]*numOfCPUs
     while len(jobs) > 0 or not AllNone(processors):
-        print(str(((1-len(jobs)/250)*100))+ "%")
+        # print(str(((1-len(jobs)/250)*100))+ "%")
         times = []
         for i in range(0,numOfCPUs):
             if processors[i] != None:
