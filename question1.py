@@ -11,4 +11,4 @@ array_of_processes = csv_to_processes('data/processes.csv')
 print(RR(array_of_processes))
 
 #Question 1 SJF
-# (SJF(array_of_processes))
+(SJF(array_of_processes))
