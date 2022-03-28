@@ -33,7 +33,7 @@ def calc_turn_around_time(array_of_processes, n):
     # Turn Around Time for the first process
     array_of_processes[0].append('0')
     
-    # The loop to calculate and append each process waiting time
+    # Calculate process turn around time
     for i in range (1,n):
         if array_of_processes[i][1] > array_of_processes[1][2]+array_of_processes[1][1]:
             Turn_Around_time = 0
